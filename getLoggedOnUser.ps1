@@ -1,0 +1,1 @@
+Get-WmiObject -ComputerName randwick-pc-65 -class win32_computersystem | select username

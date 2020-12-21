@@ -1,0 +1,1 @@
+﻿Invoke-Command -ComputerName smhh-aadc01 {Start-ADSyncSyncCycle -PolicyType Initial}
