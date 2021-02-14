@@ -1,0 +1,36 @@
+#1. Get critical and error log reports
+#computers to search
+$computername = 'Dco1','Dc02'
+foreach($computer in $computername){
+  get-winevent -computername $computer -filterhastable @{
+    logname = 'system'
+    level = 1,2 # 1 critical,2 error, 3 warning, 4 Information
+    }
+}
+
+#2. Get lockedout users from domain controller
+$computername = get-addomaincontroller -filter * | select-object -expandproperty name
+Foreach($computer in $computername){
+  get-winevent -computername $computer -filterhashtable @{
+    logname = 'security'
+      ID = 4740
+      }
+  }
+ 
+ 
+ #3. Region output to csv for usefulness
+ $output = @()
+ $computername = get-adcomputer -filter * | select-object -ExpandProperty Name
+ Foreach ($computer in $computername){
+  $Events = Get-Winevent -computername $computer -FilterHashtable @{
+    Logname = 'System'
+    Providername = 'Microsoft-Windows-GroupPolicy'
+    Level = 1,2 # 1 critical,2 error, 3 warning, 4 Information
+    }
+    Foreach ($event in $Events){
+      $output += $event | Add-member -NotePropertyNae 'ComputerName' -NotePropertyValue $computer -PassThru
+      }
+  }
+  $Output | Export-csv D:\ScriptOutput\Events.csv -NoTypeInformation
+  
+  
