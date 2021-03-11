@@ -28,7 +28,7 @@ Foreach($computer in $computername){
     Level = 1,2 # 1 critical,2 error, 3 warning, 4 Information
     }
     Foreach ($event in $Events){
-      $output += $event | Add-member -NotePropertyNae 'ComputerName' -NotePropertyValue $computer -PassThru
+      $output += $event | Add-member -NotePropertyName 'ComputerName' -NotePropertyValue $computer -PassThru
       }
   }
   $Output | Export-csv D:\ScriptOutput\Events.csv -NoTypeInformation
