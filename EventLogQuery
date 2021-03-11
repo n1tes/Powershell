@@ -2,7 +2,7 @@
 #computers to search
 $computername = 'Dco1','Dc02'
 foreach($computer in $computername){
-  get-winevent -computername $computer -filterhastable @{
+  get-winevent -computername $computer -filterhashtable @{
     logname = 'system'
     level = 1,2 # 1 critical,2 error, 3 warning, 4 Information
     }
