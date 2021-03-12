@@ -1,4 +1,9 @@
-﻿Function Install-MySoftware{
+#Enabling WINRM on remote pc First
+$pcname = Read-Host "Enter Computer name"
+psexec.exe \\$pcname -s c:\windows\system32\winrm.cmd quickconfig -q
+
+Invoke-Command -ComputerName $pcname {Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iwr https://chocolatey.org/install.ps1 -UseBasicParsing | iex}
+Function Install-MySoftware{
     [CmdletBinding()]
     param(
         [Parameter()]
@@ -36,7 +41,7 @@
             }
 
             foreach ($package in $using:Packages) {
-                choco uninstall $package -y | out-file -FilePath "C:\windows\temp\choco-$package.txt"
+                choco install $package -y | out-file -FilePath "C:\windows\temp\choco-$package.txt"
                 if ($LASTEXITCODE -eq '1641' -or '3010') {
                     # Reference: https://chocolatey.org/docs/commandsinstall#exit-codes
                     # Create new custom object to keep adding information to it
@@ -54,12 +59,12 @@
     } | Select-Object Computername, InstallPackage | Sort-Object -Property Computername
 }
 
-Install-MySoftware -computers randwick-pc-124 -Packages googlechrome, firefox, 7zip
+Install-MySoftware -computers $pcname -Packages citrix-workspace, 'zoom', 'googlechrome', 'adobereader', 'microsoft-teams'
 
-#'googlechrome', 'firefox', '7zip' 'vlc', 'notepadplusplus'
+#'googlechrome', 'firefox', '7zip' 'vlc', 'notepadplusplus', 'citrix-workspace', 'sysinternals', 'zoom', 'adobereader'
 
-# Invoke-Command -ComputerName randwick-pc-124 {Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iwr https://chocolatey.org/install.ps1 -UseBasicParsing | iex
-#} => if chocolatey not installed run this
+# Invoke-Command -ComputerName randwick-pc-03 {Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iwr https://chocolatey.org/install.ps1 -UseBasicParsing | iex}
+# => if chocolatey not installed run this
 
 
 
