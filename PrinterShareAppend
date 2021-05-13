@@ -1,0 +1,22 @@
+###Creating an empty array to store from the output we want
+$printerShare = @()
+
+###Just selecting the sharename of the printer and storing it in another variable
+$printerLists = Get-WmiObject -class win32_printer -ComputerName ps01 | select -ExpandProperty sharename
+
+
+foreach ($printer in $printerLists) 
+{
+$printerShare += "\\ps01\"+$printer+"\"    ###Appending "\\ps01\ and \ at the end"
+}
+
+#$printerShare
+
+
+###Taking the output of array and sending it to text file
+#$printerShare | out-file C:\users\niteshs\Documents\ScriptOutput\printerListByShareName.txt 
+
+#$printerShare
+
+
+
