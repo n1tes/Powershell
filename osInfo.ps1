@@ -10,7 +10,7 @@ Get-OSInfo -computername WIN8
 .EXAMPLE
 Get-OSInfo WIN8
 #>
-[CmdletBinding()]
+[CmdletBinding()] #### CmdletBinding tell powershell that I want to get all of the common parameters, including verbose
 param (
     [Parameter(Mandatory=$true)][string]$computername
 )
