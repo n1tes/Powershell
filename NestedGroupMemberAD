@@ -1,0 +1,9 @@
+Get-ADGroupMember -Identity top -Recursive | `
+   Get-ADUser -Properties memberOf | ForEach-Object {
+      New-Object PSObject -Property @{
+         Name = $_.Name
+         sAMAccountName = $_.sAMAccountName
+         Enabled = $_.Enabled
+         Groups = ($_.memberof | Get-ADGroup | Select-Object -ExpandProperty Name) -join ','
+      } 
+} | Select-Object Name,sAMAccountName,Enabled,Groups | Sort-Object -Property sAMAccountName
