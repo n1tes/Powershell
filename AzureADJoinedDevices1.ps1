@@ -5,7 +5,7 @@ $Users | ForEach-Object {
 $user = $_
 
 Get-AzureADUserRegisteredDevice -ObjectId $user.ObjectId | ForEach-Object {
-    if ($_.approximateLastlogontimestamp -gt (get-date).AddDays(-60))
+    if ($_.approximateLastlogontimestamp -gt (get-date).AddDays(-60) -and ($_.DisplayName -notlike "UK*"))
 {
     $Result += New-Object PSObject -property @{ 
         'Item Name' = $_.DisplayName
