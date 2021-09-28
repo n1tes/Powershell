@@ -1,0 +1,39 @@
+$filePath = "C:\temp\"
+
+$ComputerFileName = 'computers1.csv'
+
+# the computers to check
+
+$computerList = Import-Csv -Path "$filePath\$ComputerFileName"
+
+foreach ($operation in $computerList)
+
+{
+
+write-host $Operation
+
+write-host "List of installed updates"
+
+$Session = New-Object -ComObject "Microsoft.Update.Session"
+
+$Searcher = $Session.CreateUpdateSearcher()
+
+$historyCount = $Searcher.GetTotalHistoryCount()
+
+$Searcher.QueryHistory(0, $historyCount) | Select-Object Date,
+
+  @{name="Operation"; expression={switch($_.operation){
+
+      1 {"Installation"}; 2 {"Uninstallation"}; 3 {"Other"}}}},
+
+  @{name="Status"; expression={switch($_.resultcode){
+
+      1 {"In Progress"}; 2 {"Succeeded"}; 3 {"Succeeded With Errors"};
+
+      4 {"Failed"}; 5 {"Aborted"}
+
+}}}, Title | Export-Csv -NoType "$Env:userprofile\Desktop\Windows Updates+$operation.csv"
+
+write-host
+
+}
