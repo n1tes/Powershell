@@ -1,0 +1,24 @@
+[string]$currentFileNameStartsWith= Get-Date -format dd-MM-yyyy
+
+
+$PreviousDateMinusOneMonth = (Get-date).AddMonths(-1)
+
+[string]$PreviousFileNameStartsWith = Get-Date $PreviousDateMinusOneMonth -Format dd-MM-yyyy
+$PreviousFileNameStartsWith
+
+$previousFile = Get-ChildItem D:\Powershell\ | where {$_.name -match $PreviousFileNameStartsWith +"*"}
+$currentFile = Get-ChildItem D:\Powershell\ | where {$_.name -match $currentFileNameStartsWith +"*"}
+
+$deletedUsers = Compare-Object -ReferenceObject (get-content $previousFile) -DifferenceObject (Get-Content $currentFile) |
+where {$_.SideIndicator -eq "<="} | Select-Object -ExpandProperty InputObject
+
+
+$addedUsers = Compare-Object -ReferenceObject (get-content $previousFile) -DifferenceObject (Get-Content $currentFile) |
+where {$_.SideIndicator -eq "=>"} | Select-Object -ExpandProperty InputObject
+
+
+$deletedUsers
+
+$addedUsers
+
+
