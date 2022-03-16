@@ -1,0 +1,7 @@
+for ($ip=1; $ip -eq 255; $ip++)
+    {
+        Test-NetConnection 10.0.0.$ip |
+        select computername, remoteaddress, pingsucceeded |
+        export-csv C:\pingSweep.csv -Append -NoTypeInformation
+
+    }
