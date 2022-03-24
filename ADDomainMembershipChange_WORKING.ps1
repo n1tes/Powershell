@@ -1,6 +1,6 @@
 ﻿########################################################################################################################
 #The purpose of this script is to report via email if there are any members added or deleted in Domain Admins AD group #
-# This script is set to in via task scheduler by name "DomainAdminGroupMembershipChange" on pc zip-pc136 #
+# This script is set to in via task scheduler by name "DomainAdminGroupMembershipChange" on pc XXX #
 # This script compares the Domain Admin Members each day with previous days members #
 ########################################################################################################################
 
