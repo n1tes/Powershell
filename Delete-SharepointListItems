@@ -1,0 +1,33 @@
+
+#Register-PnPManagementShellAccess
+$siteurl = "https://zipindustries.sharepoint.com/sites/AuditCompliance"
+
+#Connecting to the shareppoint site.
+#Connect-PnPOnline -url $siteurl -UseWebLogin
+Connect-PnPOnline -url $siteurl -Interactive
+ 
+ # Only find the lists with name starting with "stock_"
+$allLists = Get-PnPList | where {$_.title -like "TestList_*"} | select -ExpandProperty Title
+
+ 
+  #$hashTable = @() #Creating empty table
+ $allItems = get-pnplistitem -list $allLists #$allLists #-PageSize 500 #Get every item in that list 
+ #### You can put a list name directly in above command if you know exactly what name it is  ####
+ #### and line $allLsts is not required.
+ #$i = 1
+ 
+
+   #Storing all the records in the list with its corresponding values
+    ForEach ($item in $allItems){
+        
+        
+        #write-host $i " " $list
+
+        Remove-PnPListItem -list $allLists -Identity $item -Force
+       
+       #Add-PnPListItem  -List $list -Values @{
+            #"rowID" = $i}
+        #$i++
+       
+    }
+    
