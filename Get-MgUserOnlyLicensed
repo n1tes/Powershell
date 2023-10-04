@@ -1,0 +1,30 @@
+#SkuId - 05e9a617-0261-4cee-bb44-138d3ef5d965 - E3
+#SkuId - 50f60901-3181-4b75-8a2c-4c8e4c1d5a72 - F1
+#SkuId - 66b55226-6b4f-492c-910c-a3b7a3c9d993 - F3
+#SkuId - 4b9405b0-7788-4568-add1-99614e613b69 - Exchange Online (Plan 1)
+
+#HeyCulligan
+
+#where {$_.userprincipalname -Notlike "*onmicrosoft*" -or $_.userprincipalname -Notlike "*zipindustries*" -or $_.GivenName -ne $null} |
+
+  #E3 users 
+  Get-MgUser -Filter "assignedLicenses/any(x:x/skuId eq 05e9a617-0261-4cee-bb44-138d3ef5d965)"  -All -Property GivenName, Surname, UserPrincipalName, EmployeeID, CompanyName, JobTitle |
+        select @{Name = 'last_name'; Expression = {$_.Surname}}, @{Name = 'first_name'; Expression = {$_.GivenName}}, @{Name = 'email'; Expression = {$_.UserPrincipalName}}, `
+         @{Name = 'Employee ID'; Expression = {$_.EmployeeID}}, employee_status, org_level_3_desc, org_level_4_desc, @{Name = 'company'; Expression = {$_.CompanyName}}, `
+         org_level_1, location, region, @{Name = 'job_title'; Expression = {$_.JobTitle}}, flsa_category, @{Name = 'manager'; Expression = {$null}}, job_alternate, gender |
+             Export-Csv D:\HeyCulligan\australia@ZipWaterlogicAustraliaUsers.csv -NoTypeInformation
+
+  #Get F1 users
+  Get-MgUser -Filter "assignedLicenses/any(x:x/skuId eq 50f60901-3181-4b75-8a2c-4c8e4c1d5a72)"  -All -Property GivenName, Surname, UserPrincipalName, EmployeeID, CompanyName, JobTitle |
+        select @{Name = 'last_name'; Expression = {$_.Surname}}, @{Name = 'first_name'; Expression = {$_.GivenName}}, @{Name = 'email'; Expression = {$_.UserPrincipalName}}, `
+         @{Name = 'Employee ID'; Expression = {$_.EmployeeID}}, employee_status, org_level_3_desc, org_level_4_desc, @{Name = 'company'; Expression = {$_.CompanyName}}, `
+         org_level_1, location, region, @{Name = 'job_title'; Expression = {$_.JobTitle}}, flsa_category, @{Name = 'manager'; Expression = {$null}}, job_alternate, gender |
+             Export-Csv D:\HeyCulligan\australia@ZipWaterlogicAustraliaUsers.csv -NoTypeInformation -Append
+
+  #Get F3 users
+ Get-MgUser -Filter "assignedLicenses/any(x:x/skuId eq 66b55226-6b4f-492c-910c-a3b7a3c9d993)"  -All -Property GivenName, Surname, UserPrincipalName, EmployeeID, CompanyName, JobTitle |
+        select @{Name = 'last_name'; Expression = {$_.Surname}}, @{Name = 'first_name'; Expression = {$_.GivenName}}, @{Name = 'email'; Expression = {$_.UserPrincipalName}}, `
+         @{Name = 'Employee ID'; Expression = {$_.EmployeeID}}, employee_status, org_level_3_desc, org_level_4_desc, @{Name = 'company'; Expression = {$_.CompanyName}}, `
+         org_level_1, location, region, @{Name = 'job_title'; Expression = {$_.JobTitle}}, flsa_category, @{Name = 'manager'; Expression = {$null}}, job_alternate, gender |
+             Export-Csv D:\HeyCulligan\australia@ZipWaterlogicAustraliaUsers.csv -NoTypeInformation -Append
+
