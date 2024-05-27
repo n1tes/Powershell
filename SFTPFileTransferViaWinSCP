@@ -1,0 +1,53 @@
+
+#####File Transfer via WINSCP #########
+
+$searchFile = "australia@"+(get-date -format dd.MM.yy)+".csv"
+$fileToTransfer = get-childitem C:\Users\admin_ns\Documents\HeyCulligan | where {$_.name -eq $searchFile}
+
+$remotePath = '/'
+
+
+Add-Type -Path "C:\Program Files (x86)\WinSCP\WinSCPnet.dll";
+ 
+    #pass the new file to secure FTP
+    # Setup session options
+    $sessionOptions = New-Object WinSCP.SessionOptions -Property @{
+        Protocol = [WinSCP.Protocol]::Sftp
+        HostName = "secure.onfirstup.eu"
+        UserName = "culligan_143_eu" 
+        Password = 'edf9c7b0f1f3d6b4bd1e7acd9510ddbc' 
+        SshHostKeyFingerprint = "ssh-rsa 2048 APidw7WKA64B2gzkaTtFvLsGrJw8L3OXxSaIFLvDDkM"
+        #Timeout = 6000
+    }
+
+    $session = New-Object WinSCP.Session;
+    try
+    {
+        #$session.SessionLogPath = '\\NGN-IMAGE\NCTracks\Logs\winscp.log';
+        
+        ## Connect
+        $session.Open($sessionOptions);
+        
+               
+        ## copy file to SFTP
+       # $allFiles = -join($filepath,"*")
+        $transferResult = $session.PutFiles($fileToTransfer.FullName,$remotePath);
+       # $transferResult.Check();
+
+       foreach ($transfer in $transferResult.Transfers){
+        if ($transfer.Error -eq $Null) {
+            write-host "transfer successfull"}
+        else {write-host "transfer failed: $($transfer.Error.Message)"}
+       
+       
+       }
+        
+        
+        ##close connection
+        $Session.Close()
+    }
+    finally
+    {
+        # Disconnect, clean up
+        $session.Dispose();
+    }
