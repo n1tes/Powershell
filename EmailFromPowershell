@@ -1,0 +1,41 @@
+
+#### Copies stock_master.csv from pronto\pcdata to this PC pronto shared folder. ####
+#### Sends an email if script fails to run #####
+
+ #New-PSDrive -Persist -Name 'P' -PSProvider FileSystem -root '\\pronto\pcdata'  -Scope Global -Credential Get-Credential ####
+
+
+$subject = "Copying stock_master Powershell script FAILED on ZIPSY3SYNC01"
+$priority = "Normal"
+$smtpServer = "mail.zipindustries.com"
+$emailFrom = "ITReport@zipindustries.com"
+$emailTo = 'nitesh.shrestha@zipwater.com', "robin.bullingham@zipwater.com", "nathan.keefe@zipwater.com"
+$port = 25 
+$emailBodyTitle = " "
+
+
+  
+
+Try{
+
+Copy-Item \\pronto\pcdata\stock_master.csv \\10.1.10.151\pronto\ -ErrorAction stop
+
+
+} 
+
+Catch {
+
+$ErrorMessage = $_.Exception.Message
+$errorDetails = $_.Exception.StackTrace
+Send-MailMessage -To $emailTo -Subject $subject -Body ($ErrorMessage + $errorDetails) -SmtpServer $smtpServer -Port $port -From $emailFrom -Priority $priority
+
+}
+
+
+
+
+
+##### cp \\pronto\pcdata\bomexport.csv \\10.1.10.151\pronto\TestFolderBomExport\              ####Just For Testing
+ ####New-PSDrive -Persist -Name 'P' -PSProvider FileSystem -root '\\pronto\pcdata' -Scope Global ####
+
+ #New-PSDrive -Persist -Name 'P' -PSProvider FileSystem -root '\\pronto\pcdata' -Scope Global -Credential $Credential ####
