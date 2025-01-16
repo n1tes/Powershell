@@ -1,3 +1,5 @@
+
+#Get-MgSubscribedSku | select skuid, skupartnumber, subcriptionids
 #SkuId - 05e9a617-0261-4cee-bb44-138d3ef5d965 - E3
 #SkuId - 50f60901-3181-4b75-8a2c-4c8e4c1d5a72 - F1
 #SkuId - 66b55226-6b4f-492c-910c-a3b7a3c9d993 - F3
